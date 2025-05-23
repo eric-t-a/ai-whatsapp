@@ -2,16 +2,25 @@
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.21",
+    "@types/qrcode": "^1.5.5",
+    "@types/qrcode-terminal": "^0.12.2",
     "express": "^5.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "nodemon",
     "build": "tsc",
     "serve": "node dist/index.js"
   },
   "dependencies": {
-    "dotenv": "^16.5.0"
+    "@adiwajshing/keyed-db": "^0.2.4",
+    "@whiskeysockets/baileys": "^6.7.17",
+    "dotenv": "^16.5.0",
+    "node-cache": "^5.1.2",
+    "nodemon": "^3.1.10",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "uuid": "^11.1.0"
   }
 }
