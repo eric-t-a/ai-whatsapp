@@ -1,4 +1,4 @@
-import makeWASocket, { Browsers, DisconnectReason, WASocket, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, useMultiFileAuthState } from '@whiskeysockets/baileys';
+import makeWASocket, { Browsers, DisconnectReason, MediaType, WASocket, downloadContentFromMessage, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, useMultiFileAuthState } from '@whiskeysockets/baileys';
 import NodeCache from "node-cache";
 import readline from 'node:readline';
 import { stdin as input, stdout as output } from 'node:process';
@@ -104,6 +104,54 @@ export class WhatsApp {
                 })
             }
         })
+
+        sock?.ev.on('messages.upsert', async (m) => {
+            if (m.type !== 'notify') return
+
+            m.messages.map(async (msg) => {
+                if (!msg.message) return
+
+                const messageType = Object.keys(msg.message)[0]
+                if (['protocolMessage', 'senderKeyDistributionMessage'].includes(messageType)) return;
+
+                let mediaContent;
+                let messageContent;
+                switch (messageType) {
+                    case 'conversation':
+                        messageContent = msg.message.conversation;
+                        break;
+                    case 'messageContextInfo':
+                        if(Object.keys(msg.message).includes('editedMessage')) {
+                            // it means that the message was edited
+                            // AI's gonna have answered by the time the user edits the message
+                        }
+                        break;
+                    case 'documentMessage':
+                        mediaContent = await this.downloadMessage(msg.message.documentMessage, 'document');
+                        break
+                    case 'imageMessage':
+                        mediaContent = await this.downloadMessage(msg.message.imageMessage, 'image');
+                        break
+                    case 'videoMessage':
+                        mediaContent = await this.downloadMessage(msg.message.videoMessage, 'video');
+                        break
+                    case 'audioMessage':
+                        mediaContent = await this.downloadMessage(msg.message.audioMessage, 'audio');
+                        break
+                    default:
+                        mediaContent = ''
+                        messageContent = ''
+                        break
+                }
+            })
+        })
+        
+        sock?.ev.on('messages.update', async (m) => {
+            let msg = m[0].update;
+            if(Object.keys(msg).includes('message') && msg.message == null){
+                // it means the message got deleted
+            }
+        })
     }
 
     async getPhoneNumber(): Promise<string> {
@@ -112,5 +160,18 @@ export class WhatsApp {
                 resolve(answer);
             });
         });
+    }
+
+    async downloadMessage(msg: any, msgType: MediaType) {
+        let buffer = Buffer.from([])
+        try {
+            const stream = await downloadContentFromMessage(msg, msgType)
+            for await (const chunk of stream) {
+                buffer = Buffer.concat([buffer, chunk])
+            }
+        } catch {
+            return console.log('error downloading file-message')
+        }
+        return buffer.toString('base64')
     }
 }
