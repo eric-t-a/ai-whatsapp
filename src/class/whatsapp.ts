@@ -48,7 +48,7 @@ export class WhatsApp {
     }
 
     async init() {
-        let { state, saveCreds } = await useMultiFileAuthState('temp');
+        let { state, saveCreds } = await useMultiFileAuthState('temp/authstate');
 
         let { version } = await fetchLatestBaileysVersion();
 
@@ -90,7 +90,7 @@ export class WhatsApp {
                             await this.init();
                         }
                     } else {
-                        console.log('STATE: zap connection closed');
+                        console.log('STATE: WhatsApp connection closed');
                         this.online = false
                     }
                     break;
