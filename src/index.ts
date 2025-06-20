@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import Whisper from "node-speech-recognition";
 import { AI } from './class/AI';
-import { MsgReceivedBody, WhatsAppAPI } from './class/WhatsappAPI';
+import { Msg, MsgReceivedBody, WhatsAppAPI } from './class/WhatsappAPI';
 dotenv.config();
 
 const app = express();
@@ -19,18 +19,18 @@ async function init() {
 
 init()
 
-async function onMessageReceived(lastMsgId: string, from: string, type: string, metadata: Record<string, string>) {
-    if(type == 'other') {
-        await wpp.sendTextMessage(from, 'Sorry, I only understand text and audio');
-        return;
-    }
+async function onMessageReceived(msg: Msg) {
+    const msgId = msg.id;
+    const btn = msg.interactive?.button_reply?.title;
+    const from = msg.from;
 
-    await wpp.startTyping(lastMsgId);
+    await wpp.startTyping(msgId);
     
-    let content = metadata.text;
+    let content = msg.text?.body ?? '';
 
-    if(type == 'audio') {
-        content = (await whisper.transcribe(metadata.path)).text;
+    if(msg.type == 'audio') {
+        // TODO refactor this
+        // content = (await whisper.transcribe(metadata.path)).text;
     }
     
     const response = await ai.answer(content)
@@ -47,13 +47,12 @@ app.post('/webhook', async (req: Request, res: Response) => {
 
     if(!messages || !messages.length) return;
 
-    const msg = messages[0].text?.body;
-    const lastMsgId = messages[0].id;
-    const btn = messages[0].interactive?.button_reply?.title;
-    const from = messages[0].from;
+    messages.forEach((msg) => {
+    
+        if(!msg.text?.body) return;
+        onMessageReceived(msg)
+    })
 
-    if(!msg) return;
-    onMessageReceived(lastMsgId, from, 'text', { text: msg })
 
     res.status(200).send('ok');
 });

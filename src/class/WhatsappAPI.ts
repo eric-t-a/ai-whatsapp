@@ -36,7 +36,7 @@ interface MsgContact {
     wa_id: string;
 }
 
-interface Msg {
+export interface Msg {
     from: string;
     id: string;
     timestamp: string;
