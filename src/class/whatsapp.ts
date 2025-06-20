@@ -32,7 +32,7 @@ const generateHashFilename = () => {
     return hashCode(date.toString());
 }
 
-export class WhatsApp {
+export class WhatsAppWeb {
     sock: WASocket
     online = false
     connRetry = 0

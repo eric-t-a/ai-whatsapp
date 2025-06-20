@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { AI } from './class/ai';
-import { WhatsApp } from './class/whatsapp';
+import { WhatsAppWeb } from './class/whatsapp';
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 const ai = new AI()
-const wpp = new WhatsApp(onMessageReceived)
+const wpp = new WhatsAppWeb(onMessageReceived)
 
 async function onMessageReceived(from: string, metadata: Record<string, string>) {
     if(metadata.type == 'other') {
