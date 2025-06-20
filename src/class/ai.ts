@@ -1,12 +1,10 @@
 import { ChatOllama } from "@langchain/ollama";
 import { ConversationChain } from "langchain/chains";
-import { Whisper, initWhisper } from "./whisper";
 import { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate } from "@langchain/core/prompts";
 import { BaseAI } from "../interfaces/BaseAI";
 
 export class AI implements BaseAI{
     model: InstanceType<typeof ChatOllama>;
-    audio_model: InstanceType<typeof Whisper>;
     chain: InstanceType<typeof ConversationChain>;
 
     constructor() {
@@ -40,17 +38,11 @@ export class AI implements BaseAI{
             llm: this.model,
             prompt: chain_prompt
         });
-        this.audio_model = await initWhisper("tiny");
     }
 
     async answer(input: string) {
         const response = await this.chain.call({ input });
     
         return response.response;
-    }
-
-    async transcribe(path: string) {
-        const transcribed = await this.audio_model.transcribe(path);
-        return transcribed;
     }
 }
