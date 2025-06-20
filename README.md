@@ -1,6 +1,6 @@
 # 🤖 WhatsApp AI Agent
 
-An intelligent AI-powered chatbot that connects to WhatsApp and interacts with users in real-time. This project uses Ollama to understand and respond to messages sent via WhatsApp using a headless WhatsApp Web API (such as `Baileys`).
+An intelligent AI-powered chatbot that connects to WhatsApp and interacts with users in real-time. This project uses Ollama to understand and respond to messages sent via WhatsApp using a headless WhatsApp Business API.
 
 ## 📌 Features
 
@@ -13,9 +13,8 @@ An intelligent AI-powered chatbot that connects to WhatsApp and interacts with u
 - [Node.js](https://nodejs.org/)
 - [Ollama](https://ollama.com/)
 - [LangChain.js](https://js.langchain.com/)
-- [Whisper](https://github.com/openai/whisper)
-- [Baileys](https://github.com/WhiskeySockets/Baileys)
-- [Express.js](https://expressjs.com/) (optional: for a web interface or API)
+- [Node-Speech-Recognition](https://www.npmjs.com/package/node-speech-recognition)
+- [Express.js](https://expressjs.com/)
 
 ## Getting Started
 
@@ -54,20 +53,19 @@ Scan the QR code that appears in the terminal with your WhatsApp mobile app.
 .
 └── src/
     ├── class
-    │   └── ai.ts          # AI setup & responses
-    │   └── whisper.ts     # Handle speech recognition
-    │   └── whatsapp.ts    # WhatsApp client setup
-    └── index.ts           # Server & Conversation loop
+    │   └── AI.ts             # AI setup & responses
+    │   └── WhatsappAPI.ts    # WhatsApp client setup
+    └── index.ts              # Server & Conversation loop
 
 ```
 
 ## ✅ TODO
 
 * [x] Add support for audio listening
-* [ ] Make prompt customizable
+* [x] Add support for WhatsApp Business API
+* [ ] Integrate with MongoDB
 * [ ] Add support for OpenAI
 * [ ] Add support for conversation memory
-* [ ] Implement web routes for QR code reading
 * [ ] Implement enable/disable AI responses
 * [ ] Implement UI for chats
 

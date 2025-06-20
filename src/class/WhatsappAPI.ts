@@ -68,10 +68,6 @@ export class WhatsAppAPI {
         })
     }
 
-    async stopTyping(to: string) {
-
-    }
-
     async sendTextMessage(to: string, content: string) {
         await this.axios_base({
             messaging_product: "whatsapp",    

@@ -22,7 +22,6 @@
     "@huggingface/transformers": "^3.5.1",
     "@langchain/core": "^0.3.57",
     "@langchain/ollama": "^0.2.0",
-    "@whiskeysockets/baileys": "^6.7.17",
     "axios": "^1.10.0",
     "dotenv": "^16.5.0",
     "fluent-ffmpeg": "^2.1.3",
