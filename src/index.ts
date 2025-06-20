@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { AI } from './class/ai';
-import { WhatsAppWeb } from './class/whatsapp';
+import { WhatsAppWeb } from './class/WhatsappWeb';
 import Whisper from "node-speech-recognition";
+import { AI } from './class/ai';
 dotenv.config();
 
 const app = express();
