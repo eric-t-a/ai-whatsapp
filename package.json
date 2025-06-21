@@ -28,6 +28,7 @@
     "fs-extra": "^11.3.0",
     "langchain": "^0.3.27",
     "mongodb": "^6.17.0",
+    "mongoose": "^8.16.0",
     "node-cache": "^5.1.2",
     "node-speech-recognition": "^1.0.7",
     "nodemon": "^3.1.10",

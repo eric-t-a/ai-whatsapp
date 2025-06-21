@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import Whisper from "node-speech-recognition";
 import { AI } from './class/AI';
 import { Msg, MsgReceivedBody, WhatsAppAPI } from './class/WhatsappAPI';
+import { configureMongoose } from './config/mongoose';
 dotenv.config();
 
 const app = express();
@@ -15,6 +16,14 @@ async function init() {
     wpp = new WhatsAppAPI;
     whisper = new Whisper();
     await whisper.init('base');
+
+    const mongoConnectionString = process.env.MONGO_URI || '';
+    const dbName = process.env.MONGO_DB_NAME || '';
+    
+    await configureMongoose({
+        connectionString: mongoConnectionString,
+        databaseName: dbName
+    });
 }
 
 init()
