@@ -63,7 +63,7 @@ Scan the QR code that appears in the terminal with your WhatsApp mobile app.
 
 * [x] Add support for audio listening
 * [x] Add support for WhatsApp Business API
-* [ ] Integrate with MongoDB
+* [x] Integrate with MongoDB
 * [ ] Add support for OpenAI
 * [ ] Add support for conversation memory
 * [ ] Implement enable/disable AI responses
