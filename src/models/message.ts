@@ -30,6 +30,7 @@ export const saveNewMessage = async (message: Message, recipient: Recipient) => 
     newMessage.save();
 
     recipient.lastMsg = newMessage._id;
+    recipient.lastMsgSentTime = newMessage.sentTime;
 
     await RecipientModel.validate(recipient);
     const updatedRecipient = await RecipientModel

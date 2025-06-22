@@ -4,6 +4,8 @@ import { AI } from './class/AI';
 import { WhatsAppAPI } from './class/WhatsappAPI';
 import { configureMongoose } from './config/mongoose';
 import webhooks from './routes/wehbooks';
+import chats from './routes/chatRoutes';
+import cors from 'cors'
 
 export const ai = new AI();
 export const wpp = new WhatsAppAPI;
@@ -12,15 +14,16 @@ export const whisper = new Whisper();
 
 export const createApp = async () => {
     const app = express();
-    app.use(express.json())
+    app.use(express.json());
+    app.use(cors({
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true,
+    }));
 
     app.use("/webhook", webhooks);
+    app.use("/chats", chats);
     
-    const ai = new AI();
-    const wpp = new WhatsAppAPI;
-    const whisper = new Whisper();
-    await whisper.init('base');
-
     const mongoConnectionString = process.env.MONGO_URI || '';
     const dbName = process.env.MONGO_DB_NAME || '';
 
