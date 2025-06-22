@@ -13,7 +13,9 @@ import { menuItems } from "../Routes";
 
 
 // --- Styles ---
-const SidebarContainer = styled.div<{ collapsed: boolean }>`
+const SidebarContainer = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'collapsed',
+  })<{ collapsed: boolean }>`
     background-color: #fdf6e3;
     color: white;
     min-height: 100vh;
@@ -92,7 +94,9 @@ const MenuItem = styled.li`
     }
 `;
 
-const Badge = styled.span<{ newBadge?: boolean }>`
+const Badge = styled.span.withConfig({
+    shouldForwardProp: (prop) => prop !== 'newBadge',
+  })<{ newBadge?: boolean }>`
     font-size: 12px;
     font-weight: 500;
     border-radius: 6px;

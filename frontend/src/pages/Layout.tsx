@@ -4,18 +4,24 @@ import { Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
 import { menuItems } from '../Routes';
 
-const LayoutContainer = styled.div<{ collapsed: boolean }>`
+const LayoutContainer = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'collapsed',
+  })<{ collapsed: boolean }>`
     position: relative;
 `;
 
-const MainContent = styled.div<{ collapsed: boolean }>`
+const MainContent = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'collapsed',
+  })<{ collapsed: boolean }>`
     padding: 32px;
     padding-left: 88px;
     width: 100dvw;
     height: 100dvh;
     background-color: #fffbe6;
 `;
-const Overlay = styled.div<{ visible: boolean }>`
+const Overlay = styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'visible',
+  })<{ visible: boolean }>`
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.4);
