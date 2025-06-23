@@ -16,7 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/:id/messages', async (req: Request, res: Response) => {
     const recipientId = req.params.id;
     const skip = parseInt(req.query.skip?.toString() || '0', 10);
-    const messages = await MessageModel.find({ recipient: recipientId }).sort({ sentTime: -1 }).skip(skip).limit(20);
+    const messages = await MessageModel.find({ recipient: recipientId }).sort({ sentTime: 1 }).skip(skip).limit(20);
     
     res.status(200).send({messages});
 });
