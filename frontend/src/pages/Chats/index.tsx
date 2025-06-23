@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from 'styled-components';
 import { MsgType, Recipient } from '../../types/chats';
 import Chat from './Chat';
+import Input from '../../components/Input';
 
 const ChatsContainer = styled.div`
   display: flex;
@@ -166,7 +167,7 @@ const ChatsIndex = () => {
       <RecipientsContainer>
         <ScrollableRecipients>
           <SearchContainer>
-            <SearchInput
+            <Input
               placeholder="Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}

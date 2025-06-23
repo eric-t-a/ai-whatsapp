@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from 'styled-components';
 import { Recipient } from '../../types/chats';
 import { Send } from 'lucide-react';
+import Input from '../../components/Input';
 
 
 const ConversationContainer = styled.div`
@@ -53,24 +54,6 @@ const InputContainer = styled.div`
   border-top: 1px solid #e0d9c9;
   background-color: #fff7e6;
   display: flex;
-`;
-
-const Input = styled.textarea`
-  flex: 1;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  background-color: #fffefc;
-  outline: 1px solid #e0d4b7;
-
-  &:focus {
-    outline: 2px solid #d3b469;
-    border-color: #d3b469;
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
 `;
 
 const SendButton = styled.button`
@@ -138,8 +121,8 @@ const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
             </MessagesContainer>
 
             <InputContainer>
-            <Input placeholder="Start typing" />
-            <SendButton><Send size={18}/></SendButton>
+                <Input type='text-area' placeholder="Start typing" />
+                <SendButton><Send size={18}/></SendButton>
             </InputContainer>
         </ConversationContainer>
     );
