@@ -78,26 +78,6 @@ const SearchContainer = styled.div`
   background-color: #fffbe6;
 `;
 
-const SearchInput = styled.input`
-  padding: 8px 16px;
-  border: unset;
-  border-radius: 6px;
-  outline: 1px solid #e0d4b7;
-  border-right: 0;
-  color: #3e3e3e;
-  width: 100%;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: 2px solid #d3b469;
-    border-color: #d3b469;
-  }
-
-  &::placeholder {
-    color: #aaa;
-  }
-`;
-
 function formatSmartDate(dateStr: Date) {
   const now = new Date();
   const date = new Date(dateStr);
