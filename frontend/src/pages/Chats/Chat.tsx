@@ -31,6 +31,18 @@ const MessagesContainer = styled.div`
   background-color: #fdf6e3;
   display: flex;
   flex-direction: column;
+
+  .date-divider {
+    background-color: var(--hover-color);
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    margin: 6px auto;
+
+    &:not(:first-child) {
+        margin-top: 16px;
+    }
+  }
 `;
 
 const MessageBubble = styled.div.withConfig({
@@ -105,6 +117,30 @@ function getHHMM(isoString: string) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
 }
+
+function formatFriendlyDate(dateString: string) {
+    const inputDate = new Date(dateString);
+    const now = new Date();
+  
+    // Strip time from both dates
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const input = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate());
+  
+    // Calculate difference in days
+    const diffTime = today.getTime() - input.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+    if (diffDays === 1) {
+      return "Yesterday";
+    } else if (diffDays > 1 && diffDays < 7) {
+      return inputDate.toLocaleDateString(undefined, { weekday: 'long' });
+    } else {
+      const day = String(inputDate.getDate()).padStart(2, '0');
+      const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+      return `${day}/${month}`;
+    }
+}
+  
   
 const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
 
@@ -130,14 +166,26 @@ const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
             <Header>{selectedRecipient.name}</Header>
 
             <MessagesContainer ref={messagesEndRef}>
-                {selectedRecipient.messages?.map((m, i) => (
-                    <MessageBubble key={i} fromMe={m.fromMe}>
-                        {m.content}
-                        <div className='time'>
-                            {getHHMM(m.sentTime)}
-                        </div>
-                    </MessageBubble>
-                ))}
+                {selectedRecipient.messages?.map((m, i, arr) => {
+                    const currentDate = new Date(m.sentTime).toDateString();
+                    const prevDate = i > 0 ? new Date(arr[i - 1].sentTime).toDateString() : null;
+                    const isNewDay = currentDate !== prevDate;
+                    return (
+                        <React.Fragment >
+                            {isNewDay && (
+                                <div className="date-divider">
+                                    {formatFriendlyDate(currentDate)}
+                                </div>
+                            )}
+                            <MessageBubble key={i} fromMe={m.fromMe}>
+                                {m.content}
+                                <div className='time'>
+                                    {getHHMM(m.sentTime)}
+                                </div>
+                            </MessageBubble>
+                        </React.Fragment>
+                    )
+                })}
             </MessagesContainer>
 
             <InputContainer>
