@@ -39,13 +39,22 @@ const MessageBubble = styled.div.withConfig({
   align-self: ${({ fromMe }) => (fromMe ? 'flex-end' : 'flex-start')};
   margin: 6px 0;
   padding: 10px 14px;
+  padding-right: 50px;
+  position: relative;
   background-color: ${({ fromMe }) => (fromMe ? '#e8e0c8' : '#fffefc')};
   color: #333;
   border-radius: 16px;
-  border-bottom-right-radius: ${({ fromMe }) => (fromMe ? '4px' : '16px')};
-  border-bottom-left-radius: ${({ fromMe }) => (fromMe ? '16px' : '4px')};
+  border-bottom-right-radius: ${({ fromMe }) => (fromMe ? '2px' : '16px')};
+  border-bottom-left-radius: ${({ fromMe }) => (fromMe ? '16px' : '2px')};
   max-width: 70%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  .time {
+    font-size: 12px;
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
+  }
 `;
 
 
@@ -90,7 +99,13 @@ interface ChatProps {
     setSelRecipient: React.Dispatch<React.SetStateAction<Recipient | null>>;
     loading: boolean;
 }
-
+function getHHMM(isoString: string) {
+    const date = new Date(isoString);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+  
 const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
 
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -115,9 +130,14 @@ const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
             <Header>{selectedRecipient.name}</Header>
 
             <MessagesContainer ref={messagesEndRef}>
-            {selectedRecipient.messages?.map((m, i) => (
-                <MessageBubble key={i} fromMe={m.fromMe}>{m.content}</MessageBubble>
-            ))}
+                {selectedRecipient.messages?.map((m, i) => (
+                    <MessageBubble key={i} fromMe={m.fromMe}>
+                        {m.content}
+                        <div className='time'>
+                            {getHHMM(m.sentTime)}
+                        </div>
+                    </MessageBubble>
+                ))}
             </MessagesContainer>
 
             <InputContainer>

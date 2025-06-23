@@ -16,7 +16,7 @@ export type Message = {
     type: MsgType
     fromMe: boolean
     ref?: string
-    sentTime: Date
+    sentTime: string
     createdDate?: Date
     updatedDate?: Date
 }
