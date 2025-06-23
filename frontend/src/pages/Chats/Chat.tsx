@@ -55,7 +55,7 @@ const InputContainer = styled.div`
   display: flex;
 `;
 
-const Input = styled.input`
+const Input = styled.textarea`
   flex: 1;
   padding: 8px 16px;
   border: none;
@@ -91,6 +91,17 @@ const SendButton = styled.button`
     }
 
 `;
+
+const EmptyChats = styled.div`
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 interface ChatProps {
     selectedRecipient: Recipient | null;
     setSelRecipient: React.Dispatch<React.SetStateAction<Recipient | null>>;
@@ -108,7 +119,11 @@ const Chat = ({setSelRecipient, selectedRecipient, loading}: ChatProps) => {
     },[selectedRecipient])
 
     if(!selectedRecipient) {
-        return (<div></div>)
+        return (
+            <EmptyChats>
+                Select a recipient to start texting
+            </EmptyChats>
+        )
     }
 
     return (
