@@ -16,15 +16,18 @@ const RecipientsContainer = styled.div`
   border-right: 1px solid #d6cbaa;
 `;
 
-const RecipientChat = styled.div`
+const RecipientChat = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'selected',
+})<{ selected: boolean }>`
   width: 100%;
   padding: 10px;
   transition: 0.3s all;
   cursor: pointer;
   border-radius: 6px 0 0 6px;
+  ${(props) => (props.selected ? 'background-color: #ffe4b5' : '')};
 
   &:hover {
-    background-color: #ffeac4;
+    background-color: ${(props) => (props.selected ? '#ffe4b5' : '#ffeac4')};
   }
 
   .top-container {
@@ -61,20 +64,31 @@ const RecipientChat = styled.div`
   }
 `;
 
+const ScrollableRecipients = styled.div`
+  height: 100%;
+  overflow-y: auto;
+`;
+
+const SearchContainer = styled.div`
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #fffbe6;
+`;
+
 const SearchInput = styled.input`
-  padding: 0.6rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 6px 0 0 6px;
-  border: 1px solid #e0d4b7;
+  padding: 8px 16px;
+  border: unset;
+  border-radius: 6px;
+  outline: 1px solid #e0d4b7;
   border-right: 0;
-  background: #fffbe9;
   color: #3e3e3e;
+  width: 100%;
   box-sizing: border-box;
-  width: calc(100% - 0.1px);
 
   &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #e0c68b;
+    outline: 2px solid #d3b469;
     border-color: #d3b469;
   }
 
@@ -83,13 +97,9 @@ const SearchInput = styled.input`
   }
 `;
 
-const ConversationContainer = styled.div`
-
-
-`;
-
-function formatSmartDate(date: Date) {
+function formatSmartDate(dateStr: Date) {
   const now = new Date();
+  const date = new Date(dateStr);
 
   const pad = (n: any) => n.toString().padStart(2, '0');
 
@@ -154,28 +164,26 @@ const ChatsIndex = () => {
   return (
     <ChatsContainer>
       <RecipientsContainer>
-      <SearchInput
-        placeholder="Search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-        {recipients.map((r) => (
-          <RecipientChat key={r.id} onClick={() => onClickRecipient(r)}>
-            <div className='top-container'>
-              <div className='name'>
-                {r.name}
+        <ScrollableRecipients>
+          <SearchContainer>
+            <SearchInput
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </SearchContainer>
+          {recipients.map((r) => (
+            <RecipientChat key={r.id} onClick={() => onClickRecipient(r)} selected={selectedRecipient?.id == r.id}>
+              <div className='top-container'>
+                <div className='name'>{r.name}</div>
+                <div className='time'>{formatSmartDate(r.lastMsgSentTime)}</div>
               </div>
-              <div className='time'>
-                {formatSmartDate(r.lastMsgSentTime)}
-              </div>
-            </div>
-            <div className='message'>
-              {r.lastMsg?.content}
-            </div>
-          </RecipientChat>
-        ))}
+              <div className='message'>{r.lastMsg?.content}</div>
+            </RecipientChat>
+          ))}
+        </ScrollableRecipients>
       </RecipientsContainer>
-      <Chat selectedRecipient={selectedRecipient} setSelRecipient={setSelRecipient}/>
+      <Chat selectedRecipient={selectedRecipient} setSelRecipient={setSelRecipient} loading={loading}/>
     </ChatsContainer>
   );
 }

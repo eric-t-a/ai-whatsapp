@@ -25,7 +25,7 @@ const SidebarContainer = styled.div.withConfig({
     transition: width 0.3s ease-in-out;
     overflow: hidden;
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     width: ${({ collapsed }) => (collapsed ? "58px" : "240px")};
     border-right: 1px solid #d6cbaa;
 `;
